@@ -58,8 +58,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'tripassign.urls'
 ROOT_HOSTCONF = 'tripassign.hosts'
 DEFAULT_HOST = 'www'
-DEFAULT_REDIRECT_URL ="http://www.tripassign.com:5000"
-PARENT_HOST = "tripassign.com:5000"
+DEFAULT_REDIRECT_URL ="http://www.tripassign.com:8000"
+PARENT_HOST = "tripassign.com:8000"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
