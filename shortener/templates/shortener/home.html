@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+input[type=button] {
+	border-radius: 0px;
+    background-color: #80c1ff;
+    border: none;
+    color: white;
+    margin-left: 20px;
+    text-align: center;
+    font-weight: bold;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 20px;
+}
+input[type=submit] {
+    width: 12%;
+    border: none;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    background-color:white ;
+    color: blue;
+    padding: 10px 15px;
+    margin: 8px 0;
+    margin-left: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);
+    border-radius: 0px;
+}
+input[type=submit]:hover {
+    background-color: #b3d9ff;
+}
+div {
+    border-radius: 0px;
+    background-color:#3271e7 ;
+    padding: 20px;
+}
+.btn-link {
+      color: #178920;
+      text-shadow: none;
+    }
+    .btn-link:hover {
+      color: #000000;
+    }
+
+   
+</style>
+
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% endblock styles %}
+{% block content %}
+
+<!--<h1 class="cover-heading">{{ title }}</h1>
+  -->
+  <div class="col-sm-12" ;" >
+    <p style="color:white;
+	font-family: sans-serif;
+	font-size: 40px;
+	margin-left: 100px; margin-top:80px" >Simplify your links</p>
+
+    <div style=" padding: 0px;
+    width: 60%;
+    margin-bottom: 20px;
+    margin-left: 100px;
+    display: inline-block;
+    border: none;
+    border-radius: 10px;
+    margin-right: 20px;
+    box-sizing: border-box;">
+                <form method='POST' action='.'> {% csrf_token %}
+                    {{ form.as_p }}</div>
+                <input class='' type='button' value='+' id="add" >
+
+
+                <input class='' type='submit' value='Shorten' >
+                </form>
+            </div>
+
+
+
+<div class="container" style="background-color: green ">
+  {% for obj in object %} 
+   
+
+      {{ obj.url }} a {{ obj.shortcode}}b {{ obj.t_created}} </td>
+  
+  {% endfor %} 
+
+
+        
+
+</div>
+<!--
+<div class="container">
+ 	<ul class="pagination">
+    <li class="active"><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+  </ul>
+</div>
+-->{% endblock content %}
