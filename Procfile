@@ -1,1 +1,1 @@
-web: gunicorn tripassign.wsgi
+web: gunicorn tripassign.wsgi 

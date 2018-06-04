@@ -1,11 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.views.generic import ListView
 
 from .forms import SubmitUrlForm
 from .models import thwURL
-from analytics.models import ClickEvent
+from analytics.models import ClickEvent 
 
 # Create your views here.
 def home_view_fbv(request, *args, **kwargs):
@@ -16,19 +17,23 @@ def home_view_fbv(request, *args, **kwargs):
 class HomeView(View):
 	def get(self, request, *args, **kwargs):
 	 	the_form = SubmitUrlForm()
-	 	obj = thwURL.objects.all()
-	 	objects = []
-	 	for o in obj:
-	 		a = thwURL.objects.get(url=o)
-	 		objects.append([a.url, a.shortcode ,a.t_created])
-	 		print(objects)
-	 		context = {
+	 	b =	thwURL.objects.all()
+	 	paginator = Paginator(b, 3)
+	 	page = request.GET.get('page')
+	 	#obj= paginator.get_page(page)
+	 	try:
+	 		b = paginator.page(page)
+	 	except PageNotAnInteger:
+	 		b = paginator.page(1)
+	 	except EmptyPage:
+	 		b = paginator.page(paginator.num_pages)	 		 	
+	 	context = {
 	 		"title": "",
 	 		"form": the_form,
-	 		"object": objects
+	 		"bb":b
 	 		}
-	 		print(obj)
-	 		return render(request, "shortener/home.html", context)
+	 	#print(context)
+	 	return render(request, "shortener/home.html", context)
 
 	def post(self, request, *args, **kwargs):
 		form = SubmitUrlForm(request.POST)

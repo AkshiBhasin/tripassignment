@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime  import datetime
 # Create your models here.
 from shortener.models import thwURL
 
@@ -15,10 +15,10 @@ class ClickEventManager(models.Manager):
 
 class ClickEvent(models.Model):
 	thw_url     = models.OneToOneField(thwURL, on_delete=models.DO_NOTHING)
-	count       = models.IntegerField(default=0, )
+	count       = models.IntegerField(default=0 )
 	updated     = models.DateTimeField(auto_now=True)
 	timestamp   = models.DateTimeField(auto_now_add=True)
-	#created     = models.DateTimeField(default=datetime.now, blank=False)
+	#t_created   = models.DateTimeField(default=datetime.now, blank=False)
 	objects     = ClickEventManager()
 	
 

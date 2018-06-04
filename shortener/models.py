@@ -2,7 +2,7 @@ from django.db import models
 from datetime  import datetime
 from django.utils import formats
 # Create your models here.
-
+#from analytics.models import ClickEvent
 from django_hosts.resolvers import reverse
 from .utils import code_generator, create_shortcode
 
@@ -13,10 +13,7 @@ class thwURLManager(models.Manager):
 	def all(self, *args, **kwargs):
 		qs_main = super(thwURLManager, self).all(*args,**kwargs)
 		qs = qs_main.filter(active=True)
-		objects = []
-		for q in qs:
-			objects.append(q)
-		return objects
+		return qs
 
 
 	def refresh_shortcodes(self, items=None):
@@ -39,6 +36,8 @@ class thwURL(models.Model):
 	timestamp   = models.DateTimeField(auto_now_add=True,blank=False)
 	t_created   = models.DateTimeField(default=datetime.now, blank=False)
 	active      = models.BooleanField(default=True)
+	ccount      = models.IntegerField(default=0)
+	
 	objects = thwURLManager()
 	def save(self, *args, **kwargs):
 		if self.shortcode is None or self.shortcode == "":

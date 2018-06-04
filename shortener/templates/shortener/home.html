@@ -7,7 +7,7 @@ input[type=button] {
     background-color: #80c1ff;
     border: none;
     color: white;
-    margin-left: 20px;
+    margin-left: 10px;
     text-align: center;
     font-weight: bold;
     display: inline-block;
@@ -21,7 +21,7 @@ input[type=submit] {
     font-size: 20px;
     font-weight: bold;
     background-color:white ;
-    color: blue;
+    color: #4d79ff;
     padding: 10px 15px;
     margin: 8px 0;
     margin-left: 20px;
@@ -53,13 +53,13 @@ div {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+  
 {% endblock styles %}
 {% block content %}
 
 <!--<h1 class="cover-heading">{{ title }}</h1>
   -->
-  <div class="col-sm-12" ;" >
+  <div class="col-sm-12" ;" style="margin-bottom: 40px;box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);" >
     <p style="color:white;
 	font-family: sans-serif;
 	font-size: 40px;
@@ -67,7 +67,6 @@ div {
 
     <div style=" padding: 0px;
     width: 60%;
-    margin-bottom: 20px;
     margin-left: 100px;
     display: inline-block;
     border: none;
@@ -79,32 +78,91 @@ div {
                 <input class='' type='button' value='+' id="add" >
 
 
-                <input class='' type='submit' value='Shorten' >
+                <input class='' type='submit' value='SHORTEN URL' >
                 </form>
+                <p style="color:white;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin-left: 100px; " >All URLs and click analytics are public and can be accessed by anyone</p>
             </div>
 
 
 
-<div class="container" style="background-color: green ">
-  {% for obj in object %} 
-   
-
-      {{ obj.url }} a {{ obj.shortcode}}b {{ obj.t_created}} </td>
-  
-  {% endfor %} 
 
 
-        
 
-</div>
+
+<div id="table-dis" class="container"class="pagination"style=" background-color: white">
+  <table class="table table-hover table-bordered" style="box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.19);" >
+    <tr style="background-color: #F5F5F5;color: #707070">
+      <th id="longurl">Original URL</th>
+      <th>Created</th>
+      <th>Short URL</th>
+      <th>All Clicks</th>
+    </tr>{% for burl in bb %}
+      <tr>
+      <td><a href="{{ burl.url}}" target="_blank">{{ burl.url }}</td>
+      <td>{{ burl.t_created}}</td>  
+      <td><a href="{{ burl.shortcode}}" target="_blank">{{ burl.shortcode}}</a> </td>
+      <td>{{ burl.clickevent.count }} </td>
+    </tr>{% endfor %}
+    <tr style="background-color: #F5F5F5;color: #707070; text-align: right;" >
+      <td colspan="4"> <span class="step-links">
+        {% if bb.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ bb.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ bb.number }} of {{ bb.paginator.num_pages }}.
+        </span>
+
+        {% if bb.has_next %}
+            <a href="?page={{ bb.next_page_number }}">next</a>
+            <a href="?page={{ bb.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+
+    </span></td>
+    </tr>
+
+
+       
+
+     
+  </table>
+
+
 <!--
-<div class="container">
- 	<ul class="pagination">
-    <li class="active"><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-  </ul>
-</div>
--->{% endblock content %}
+<ul class="pagination">
+
+{% if bb.has_previous %}
+    <li><a href="?page={{ bb.previous_page_number }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+{% endif %}
+
+{% if bb.number|add:'-4' > 1 %}
+    <li><a href="?page={{ bb.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+{% for i in bb.paginator.page_range %}
+    {% if bb.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% elif i > bb.number|add:'-5' and i < bb.number|add:'5' %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+{% endfor %}
+
+{% if bb.paginator.num_pages > bb.number|add:'4' %}
+    <li><a href="?page={{ bb.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+{% if bb.has_next %}
+    <li><a href="?page={{ bb.next_page_number }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+{% else %}
+    <li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+{% endif %}
+
+</ul>
+ -->
+{% endblock content %}
