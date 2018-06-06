@@ -50,9 +50,17 @@ div {
 
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
   
 {% endblock styles %}
 {% block content %}
@@ -73,43 +81,86 @@ div {
     border-radius: 10px;
     margin-right: 20px;
     box-sizing: border-box;">
-                <form method='POST' action='.'> {% csrf_token %}
-                    {{ form.as_p }}</div>
-                <input class='' type='button' value='+' onclick="addList();" id="btnadd" >
+                
 
 
   <script type="text/javascript">
-      const redirectUrl = "http://www.tripassign.com:8000/";
-      const array = new Array();
-      var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-      function addList() {
-          var url = document.getElementById("id_url").value;
-          console.log(url);
-          if(pattern.test(url)) {
-              if(!array.includes(url)) {
-                  array.push(url);
-                  var list = document.getElementById("url-list");
-                  list.innerHTML += "<li>" + url + "</li>";
-                  document.getElementById("id_url").value="";
+     const array = new Array();
+var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+function addList() {
 
 
+    var url = document.getElementById("url").value;
+    var http = /^https?:\/\//i;
+    if (!http.test(url)) {
+        url = 'http://' + url;
+    }
+    console.log(url);
+    if(pattern.test(url)) {
+        if(!array.includes(url)) {
+            array.push(url);
+            var list = document.getElementById("url-list");
+            list.innerHTML += "<li>" + url + "</li>";
+            document.getElementById("url").value="";
+        }
+        else{
+            showError("URL ALREADY IN THE LIST!");
+            setTimeout(hideError, 2000);
+        }
+    }
+    else{
+        console.log("Invalid url");
+        showError("Invalid URL");
+        setTimeout(hideError, 2000);
+    }
+}
 
-              }
-            }
-          }
 
-                  var ul = document.createElement("ul");
-                  document.body.appendChild(ul);
+function showError(error) {
+    var notification = document.getElementById("notification ");
+    notification.innerHTML=error;
+    notification.style.visibility = "visible";
+}
+function hideError() {
+    var notification = document.getElementById("notification ");
+    notification.style.visibility = "hidden";
+}
+function sendUrls() {
+    var url = document.getElementById("url").value;
+    document.getElementById("url").value="";
+    var list = document.getElementById("url-list").innerHTML = "";
 
-                    for (var i =0; i < array.length; i++)
-                      {
-                     var li = document.createElement("li");  
-                      li.innerHTML = i;
-                      ul.appendChild(li);
-                   }
+
+    var http = /^https?:\/\//i;
+    if (!http.test(url)) {
+        url = 'http://' + url;
+    }
+    console.log(url);
+    if(pattern.test(url)) {
+        if (!array.includes(url)) {
+            array.push(url);
+            //Send the array
+
+        }
+    }
+    if(!array.isEmpty){
+        $.post("/shorten",
+            {
+                urls:JSON.stringify(array)
+            },
+            function(data, status){
+                location.reload();
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+    }
+
+}
 
   </script>
-
+                <form method='POST' action='.'> 
+                  <input type="text" class="form-control form-control-lg" name="url" placeholder="Your long URL here" required>
+                    </div>
+                <input class='' type='button' value='+' onclick="addList();" id="btnadd" >
 
                 <input class='' type='submit' value='SHORTEN URL' >
                 </form>
@@ -197,5 +248,23 @@ div {
 {% endif %}
 
 </ul>
+
+
+var list = [];
+
+function additem(){
+var noofitems = list.length;
+
+list[noofitems] = document.getElementById("url").value;
+DisplayResults();
+}
+
+function DisplayResults(){
+  var n= list.length;
+
+
+
+}
+
  -->
 {% endblock content %}
