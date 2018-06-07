@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 from django.views.generic import ListView
 
 from .forms import SubmitUrlForm
@@ -17,7 +18,7 @@ def home_view_fbv(request, *args, **kwargs):
 class HomeView(View):
 	def get(self, request, *args, **kwargs):
 	 	the_form = SubmitUrlForm()
-	 	b =	thwURL.objects.all()
+	 	b =	thwURL.objects.get_queryset().order_by('-id')
 	 	paginator = Paginator(b, 3)
 	 	page = request.GET.get('page')
 	 	#obj= paginator.get_page(page)
@@ -34,6 +35,7 @@ class HomeView(View):
 	 		}
 	 	#print(context)
 	 	return render(request, "shortener/home.html", context)
+
 
 	def post(self, request, *args, **kwargs):
 		form = SubmitUrlForm(request.POST)
